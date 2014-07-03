@@ -128,8 +128,9 @@ function.  This makes extensibility much easier.
 ;; expands to:
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (defpackage+-dispatch ':use '(#:cl))
-  (defpackage+-dispatch ':export '(#:symbol)))
+  (ensure-package ':my-package)
+  (defpackage+-dispatch ':use '(#:cl) ':my-package)
+  (defpackage+-dispatch ':export '(#:symbol) ':my-package))
 ```
 
 ## Utilities
