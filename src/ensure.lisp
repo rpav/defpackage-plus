@@ -8,7 +8,7 @@
 
 (defun ensure-package (package-name)
   (unless (find-package package-name)
-    (make-package package-name)))
+    (make-package package-name :use nil)))
 
 (defun ensure-nicknames (nickname-list &optional (package *package*))
   (rename-package package (package-name package) nickname-list))
