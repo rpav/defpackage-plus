@@ -1,4 +1,4 @@
-(in-package :defpackage-plus-1.0)
+(in-package :defpackage-plus-1)
 
 (defun package-external-symbols (package)
   "=> LIST-OF-SYMBOLS

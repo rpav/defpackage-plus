@@ -1,4 +1,4 @@
-(in-package :defpackage-plus-1.0)
+(in-package :defpackage-plus-1)
 
 (defgeneric defpackage+-dispatch (option parameters package-name)
   (:documentation "This function is called for every form in the body

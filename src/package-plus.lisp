@@ -1,6 +1,6 @@
-(in-package :defpackage+-user-1.0)
+(in-package :defpackage+-user-1)
 
-(defpackage+ :defpackage-plus-1.0
+(defpackage+ :defpackage-plus-1
   (:export-only
 
    ;; The Macro

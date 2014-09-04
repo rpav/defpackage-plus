@@ -1,4 +1,4 @@
-(in-package :defpackage-plus-1.0)
+(in-package :defpackage-plus-1)
 
 (defun import-from (from-package symbol-name-list &optional (package *package*))
   "Import symbols in `SYMBOL-NAME-LIST` from `FROM-PACKAGE` into `PACKAGE`.

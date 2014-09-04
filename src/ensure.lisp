@@ -1,4 +1,4 @@
-(in-package :defpackage-plus-1.0)
+(in-package :defpackage-plus-1)
 
 (defun ensure-use-only (use-list &optional (package *package*))
   (let ((use-list (mapcar #'find-package use-list)))

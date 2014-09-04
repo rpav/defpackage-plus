@@ -18,18 +18,18 @@ change, but it would be a big improvement.  You have a few options:
 This is where `defpackage-plus` comes in:
 
 ```lisp
-(defpackage+ :system-1.0
+(defpackage+ :system-1
   ...
   (:export #:function-1 #:function-2 #:function-3))
 
-(defpackage+ system-1.1
+(defpackage+ system-2
   ...
-  (:inherit-except :system-1.0 #:function-3)
+  (:inherit-except :system-1 #:function-3)
   (:export #:function-3))
 ```
 
 This does nothing fancy: it simply imports *and* exports all external
-symbols from `:system-1.0`, except `FUNCTION-3`.  At this point, a
+symbols from `:system-1`, except `FUNCTION-3`.  At this point, a
 *different* `FUNCTION-3` is exported, and it may be defined in
 whatever new way that's desired.
 
@@ -45,7 +45,7 @@ package `:defpackage+-user-<version>` is provided for easily accessing
 this and other defpackage-plus functionality.  For example:
 
 ```lisp
-(in-package :defpackage+-user-1.0)
+(in-package :defpackage+-user-1)
 
 (defpackage+ :my-package
   (:use #:cl #:alexandria)
@@ -170,13 +170,13 @@ the various `:inherit` options to push forward anything that will
 For example:
 
 ```lisp
-(defpackage+ my-package-1.0
+(defpackage+ my-package-1
   (:use #:cl)
   (:export function-1 function-2))
 
-(defpackage+ my-package-1.1
+(defpackage+ my-package-2
   (:use #:cl)
-  (:inherit-from :my-package-1.0 #:function-1)
+  (:inherit-from :my-package-1 #:function-1)
   (:export #:function-3))
 ```
 
@@ -187,27 +187,27 @@ unchanged and available.
 Users will simply do the following:
 
 ```lisp
-(defpackage+ user-package-1.0
-  (:use ... #:my-package-1.1))
+(defpackage+ user-package-1
+  (:use ... #:my-package-2))
 ```
 
-This will ensure they see only the relevant `1.1` symbols.  Of
+This will ensure they see only the relevant `2` symbols.  Of
 course, users using `defpackage+` is not strictly necessary, but it
 may be useful in the following examples.
 
 Not all users may, of course, wish to import all of your symbols into
 their packages, for all the regular reasons.  And typing
-`my-package-1.1:` before every symbol may be a bit onerous to some.
-The following is also a possibility:
+`my-package-2:` before every symbol may be a bit onerous to some.  The
+following is also a possibility:
 
 ```lisp
-(defpackage+ user-apis-1.0
-  ;; Alternatively we could simply (:inherit #:my-package-1.1 #:some-other-3.2)
-  (:inherit-from #:my-package-1.1 symbol-1 ...)
-  (:inherit-from #:some-other-3.2 another-symbol ...))
+(defpackage+ user-apis-1
+  ;; Alternatively we could simply (:inherit #:my-package-2 #:some-other-3)
+  (:inherit-from #:my-package-2 symbol-1 ...)
+  (:inherit-from #:some-other-3 another-symbol ...))
 
-(defpackage+ :user-package-1.0
-  (:use ... :user-apis-1.0))
+(defpackage+ :user-package-1
+  (:use ... :user-apis-1))
 ```
 
 There are many ways to combine this based on preference, of course.
@@ -223,10 +223,10 @@ without:
 ```lisp
 ;;; This is a TERRIBLE idea.  You just defeated the point:
 (defpackage+ my-package
-  (:inherit-from :my-package-3.2 ...))
+  (:inherit-from :my-package-3 ...))
 
-(defpackage+ my-package-3.2
-  (:inherit-from :my-package-3.1 ...))
+(defpackage+ my-package-3
+  (:inherit-from :my-package-2 ...))
 
 ...
 ```
@@ -240,22 +240,22 @@ You change things wildly.  Much code rot ensues.
 following, if you are unfamiliar with how packages and symbols work:
 
 ```lisp
-(defpackage my-package-1.0
+(defpackage my-package-1
   ...
   (:export #:function-1))
 
-(defpackage my-package-1.1
+(defpackage my-package-2
   ...
-  (:inherit my-package-1.0))
+  (:inherit my-package-1))
 
-;;; This is BAD.  You just broke 1.0:
-(in-package :my-package-1.1)
+;;; This is BAD.  You just broke 1:
+(in-package :my-package-2)
 
 (defun function-1 (...)
   ...)
 ```
 
-The fact `FUNCTION-1` is being redefined while "in" `MY-PACKAGE-1.1`
-is irrelevant: `FUNCTION-1` is still imported from `MY-PACKAGE-1.0`,
+The fact `FUNCTION-1` is being redefined while "in" `MY-PACKAGE-2`
+is irrelevant: `FUNCTION-1` is still imported from `MY-PACKAGE-1`,
 and you are *redefining the old function* here.  What you *should*
 have done was `:inherit-except` and exported a new version.
