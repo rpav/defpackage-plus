@@ -51,7 +51,7 @@ defpackage-plus; user methods should **not** specialize on these."))
 (defmethod defpackage+-dispatch ((option (eql :import-from)) params package)
   (let ((from-package (car params))
         (symbol-list (cdr params)))
-    (import-from symbol-list from-package package)))
+    (import-from from-package symbol-list package)))
 
 (defmethod defpackage+-dispatch ((option (eql :import-except)) params package)
   (let ((from-package (car params))
