@@ -76,9 +76,11 @@ The following options are available:
 * `:inherit PACKAGE`: Import *all* symbols external to `PACKAGE`, and
   also export them.
 * `:inherit-except PACKAGE SYMBOLS...`: Import all symbols external to
-  `PACKAGE` *except* those named by `SYMBOLS`.  (Note that this will
-  not *remove* symbols *previously imported*.)
+  `PACKAGE` *except* those named by `SYMBOLS`, and export them.  (Note
+  that this will not *remove* symbols *previously imported*.)
 * `:import-from PACKAGE SYMBOLS...`: Import `SYMBOLS` from `PACKAGE`.
+* `:import-except PACKAGE SYMBOLS...`: Import all symbols from
+  `PACKAGE`, *except* those named by `SYMBOLS`.
 * `:shadow SYMBOLS...`: Ensure and add `SYMBOLS` to the shadowing
   symbols list.
 * `:shadowing-import-from PACKAGE SYMBOLS...`: Import `SYMBOLS` from

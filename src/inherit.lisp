@@ -30,6 +30,16 @@ It is an error if any symbol named in `SYMBOL-NAME-LIST` is not accessible in
                               symbol-name-list)))
     (shadowing-import symbol-list package)))
 
+(defun import-package-except (from-package except-symbols
+                              &optional (package *package*))
+  "Import all symbols from `FROM-PACKAGE` *except* those specified by
+`EXCEPT-SYMBOLS`."
+  (let ((symbol-list (set-difference (package-external-symbols from-package)
+                                     except-symbols
+                                     :key #'symbol-name
+                                     :test #'equal)))
+    (import symbol-list package)))
+
 (defun inherit-from-package (from-package symbol-list &optional (package *package*))
   "Import/export some external symbols from `FROM-PACKAGE`.  This is like
 `IMPORT-FROM`, except symbols in `SYMBOL-LIST` are *also exported*
@@ -64,6 +74,8 @@ symbols exported from `FROM-PACKAGE` will not also be exported from
   "Import/export all symbols from `FROM-PACKAGE` *except* those specified by
 `EXCEPT-SYMBOLS`."
   (let ((symbol-list (set-difference (package-external-symbols from-package)
-                                     except-symbols)))
+                                     except-symbols
+                                     :key #'symbol-name
+                                     :test #'equal)))
     (import symbol-list package)
     (export symbol-list package)))
