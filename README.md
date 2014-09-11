@@ -216,9 +216,9 @@ There are many ways to combine this based on preference, of course.
 If package-local nicknames are available, this may provide the
 cleanest option, but not all Lisps support this.
 
-### What not to do
+### What not to do:
 
-**Leaving off version numbers.** It may occur to some people to simply
+**Leave off version numbers.** It may occur to some people to simply
 maintain "old" versions with version numbers, and the "latest" version
 without:
 
@@ -238,7 +238,7 @@ everyone's code, defeating the point.  Requiring people to figure out
 after the fact which version works with their code is even worse.
 You change things wildly.  Much code rot ensues.
 
-**Importing everything always.** It may occur to you to do the
+**Import everything always.** It may occur to you to do the
 following, if you are unfamiliar with how packages and symbols work:
 
 ```lisp
