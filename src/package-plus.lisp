@@ -1,6 +1,7 @@
 (in-package :defpackage+-user-1)
 
 (defpackage+ :defpackage-plus-1
+  (:nicknames #:defpackage+-1)
   (:export-only
 
    ;; The Macro
