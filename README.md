@@ -79,6 +79,9 @@ The following options are available:
   `PACKAGE` *except* those named by `SYMBOLS`, and export them.  (Note
   that this will not *remove* symbols *previously imported*.)
 * `:import-from PACKAGE SYMBOLS...`: Import `SYMBOLS` from `PACKAGE`.
+* `:import-external PACKAGE SYMBOLS...`: Import `SYMBOLS` from `PACKAGE`,
+   like `:import-from`, but it is an error if any symbol in `SYMBOLS` is
+   not external to `PACKAGE`.
 * `:import-except PACKAGE SYMBOLS...`: Import all symbols from
   `PACKAGE`, *except* those named by `SYMBOLS`.
 * `:shadow SYMBOLS...`: Ensure and add `SYMBOLS` to the shadowing
@@ -100,7 +103,7 @@ there are some notable differences:
   specify options in any order, and executes them in a specific order,
   `defpackage+` executes options *in the order given*.
 * Some options such as `:use` and `:export` have more permissive
-  behavior.
+  behavior depending on your Lisp.
 * The `:use` list is by default `NIL`.  You must specify all packages,
   such as `CL`.
 * There is no `:size`.
@@ -145,8 +148,11 @@ actual implementation of `defpackage+`):
   These are all functions which ensure the relevant package state
   (including `ensure-package`, which ensures the package named
   exists).
-* `import-from`, `shadowing-import-from`:  These provide a "-FROM"
-  form to complement the Common Lisp functions.
+* `import-from`, `shadowing-import-from`: These provide a "-FROM" form
+  to complement the Common Lisp functions.
+
+* `import-external-from`: The function to complement the
+  `:import-external` option.
 
 * `inherit-from-package`, `inherit-package`, `inherit-package-except`:
   These provide import/export functionality.
