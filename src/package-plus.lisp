@@ -18,8 +18,9 @@
 
    ;; Importing/Inheriting
    #:import-from
+   #:import-external-from
    #:shadowing-import-from
-   #:inherit-from-package
+   #:inherit-from
    #:inherit-package
    #:inherit-package-except
 

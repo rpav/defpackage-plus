@@ -37,7 +37,7 @@ defpackage-plus; user methods should **not** specialize on these."))
 (defmethod defpackage+-dispatch ((option (eql :inherit-from)) params package)
   (let ((from-package (car params))
         (symbol-list (cdr params)))
-    (inherit-from-package from-package symbol-list package)))
+    (inherit-from from-package symbol-list package)))
 
 (defmethod defpackage+-dispatch ((option (eql :inherit)) params package)
   (loop for i in params
@@ -52,6 +52,11 @@ defpackage-plus; user methods should **not** specialize on these."))
   (let ((from-package (car params))
         (symbol-list (cdr params)))
     (import-from from-package symbol-list package)))
+
+(defmethod defpackage+-dispatch ((option (eql :import-external)) params package)
+  (let ((from-package (car params))
+        (symbol-list (cdr params)))
+    (import-external-from from-package symbol-list package)))
 
 (defmethod defpackage+-dispatch ((option (eql :import-except)) params package)
   (let ((from-package (car params))
