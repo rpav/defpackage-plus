@@ -1,42 +1,8 @@
 # defpackage-plus
 
-DEFPACKAGE-PLUS is an *extensible* `DEFPACKAGE` variant with some
-utilities useful for versioning.
-
-A common occurrence: you want to alter your API in some incompatible
-way.  Change how a function works.  Alter a default.  Not a huge
-change, but it would be a big improvement.  You have a few options:
-
-*  **Just do it**: Break everything else.  Your new feature is great, but
-   your users are upset.
-*  **Don't do it**: It was a great idea, but too bad... you can't
-   afford to change anything, ever.
-*  **New system**: Release an entirely new system, hope people notice.
-   You continue development on the new system, but people are still
-   using the old stuff, so now you're maintaining two... or more.
-
-This is where `defpackage-plus` comes in:
-
-```lisp
-(defpackage+ :system-1
-  ...
-  (:export #:function-1 #:function-2 #:function-3))
-
-(defpackage+ system-2
-  ...
-  (:inherit-except :system-1 #:function-3)
-  (:export #:function-3))
-```
-
-This does nothing fancy: it simply imports *and* exports all external
-symbols from `:system-1`, except `FUNCTION-3`.  At this point, a
-*different* `FUNCTION-3` is exported, and it may be defined in
-whatever new way that's desired.
-
-Both versions may exist simultaneously, even share code, and vary in
-whatever way the developer needs.  Simple, but effective.
-
-For more complex uses, see *Idioms* below.
+DEFPACKAGE-PLUS is an *extensible* `DEFPACKAGE` variant with
+predictable cross-platform behavior and some utilities useful for
+versioning. (See <a href="#versioning">Versioning</a> below.)
 
 ## defpackage+
 
@@ -54,7 +20,7 @@ this and other defpackage-plus functionality.  For example:
 
 ### Options
 
-The following options are available:
+The following options are available.  Each of these are implemented as a call to the corresponding <a href="#package-manipulation-functions">package manipulation function</a>.  Repeated evaluations of the `DEFPACKAGE+` form are the same as repeatedly calling each function in sequence, and the behavior of such is stated below:
 
 * `:use PACKAGES...`: `PACKAGES` are inherited as per `USE-PACKAGE`.
   Notably, this is different from `defpackage`'s `:use`, because it
@@ -93,11 +59,11 @@ The following options are available:
 * `:intern SYMBOLS...`: Intern `SYMBOLS` if they are not already
   accessible.
 
+Package definition itself (i.e. the `(defpackage+ NAME)` part) happens via `ENSURE-PACKAGE`; the package will be created unless one already exists with the given name.
+
 ### Differences with `defpackage`
 
-For the most part, `defpackage+` is simply a more convenient
-`defpackage`.  You can likely use them interchangeably.  However,
-there are some notable differences:
+For the most part, `defpackage+` is simply a more convenient `defpackage`.  You can likely use them interchangeably.  However, there are some notable differences:
 
 * **Order is significant**:  Unlike `defpackage`, which allows you to
   specify options in any order, and executes them in a specific order,
@@ -138,10 +104,9 @@ function.  This makes extensibility much easier.
   (defpackage+-dispatch ':export '(#:symbol) ':my-package))
 ```
 
-## Utilities
+## Package Manipulation Functions
 
-Numerous additional functions are provided (many of which are the
-actual implementation of `defpackage+`):
+Numerous additional functions are provided in addition to what Common Lisp already provides.  These are identical to, and used to implement, the corresponding `defpackage+` options.
 
 * `ensure-use-only`, `ensure-package`, `ensure-nicknames`,
   `ensure-export`, `ensure-export-only`, `ensure-export-warning`:
@@ -154,8 +119,8 @@ actual implementation of `defpackage+`):
 * `import-external-from`: The function to complement the
   `:import-external` option.
 
-* `inherit-from-package`, `inherit-package`, `inherit-package-except`:
-  These provide import/export functionality.
+* `inherit-from`, `inherit-package`, `inherit-package-except`: These
+  provide import/export functionality.
 
 * `package-external-symbols`, `package-symbols`: These return new
   lists of external symbols and all symbols, respectively, to
@@ -169,11 +134,44 @@ as well as the ability to improve the API without conflicts.
 
 ### Versioning
 
+A common occurrence: you want to alter your API in some incompatible
+way.  Change how a function works.  Alter a default.  Not a huge
+change, but it would be a big improvement.  You have a few options:
+
+*  **Just do it**: Break everything else.  Your new feature is great, but
+   your users are upset.
+*  **Don't do it**: It was a great idea, but too bad... you can't
+   afford to change anything, ever.
+*  **New system**: Release an entirely new system, hope people notice.
+   You continue development on the new system, but people are still
+   using the old stuff, so now you're maintaining two... or more.
+
+This is where `defpackage-plus` comes in:
+
+```lisp
+(defpackage+ :system-1
+  ...
+  (:export #:function-1 #:function-2 #:function-3))
+
+(defpackage+ system-2
+  ...
+  (:inherit-except :system-1 #:function-3)
+  (:export #:function-3))
+```
+
 Simply append an appropriate version number to your package.  When you
 wish to introduce significant (i.e., API-incompatible) changes, simply
 create a new package with `defpackage+` with a higher version, and use
 the various `:inherit` options to push forward anything that will
 *not* change.
+
+This does nothing fancy: it simply imports *and* exports all external
+symbols from `:system-1`, except `FUNCTION-3`.  At this point, a
+*different* `FUNCTION-3` is exported, and it may be defined in
+whatever new way that's desired.
+
+Both versions may exist simultaneously, even share code, and vary in
+whatever way the developer needs.  Simple, but effective.
 
 For example:
 
