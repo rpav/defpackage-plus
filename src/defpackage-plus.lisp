@@ -19,7 +19,7 @@ defpackage-plus; user methods should **not** specialize on these."))
   (use-package params package))
 
 (defmethod defpackage+-dispatch ((option (eql :use-only)) params package)
-  (ensure-use-only package params))
+  (ensure-use-only params package))
 
 (defmethod defpackage+-dispatch ((option (eql :export)) params package)
   (ensure-export params package))
