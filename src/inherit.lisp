@@ -4,6 +4,8 @@
 
 (defun map-symbol-names (function symbol-name-list from-package)
   (let ((*from-package* (find-package from-package)))
+    (unless *from-package*
+      (error "Package not found: ~S" from-package))
     (mapcar (lambda (x)
               (multiple-value-bind (symbol status)
                   (find-symbol (string x) *from-package*)
