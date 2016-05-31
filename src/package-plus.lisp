@@ -19,6 +19,7 @@
    ;; Importing/Inheriting
    #:import-from
    #:import-external-from
+   #:import-except-conflicts
    #:shadowing-import-from
    #:inherit-from
    #:inherit-package

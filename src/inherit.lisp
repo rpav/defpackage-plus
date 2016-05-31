@@ -66,6 +66,15 @@ It is an error if any symbol named in `SYMBOL-NAME-LIST` is not accessible in
                                      :test #'equal)))
     (import symbol-list package)))
 
+(defun import-except-conflics (from-package &optional (package *package*))
+  "Import all symbols from `FROM-PACKAGE` *except* symbols that would
+conflict with those in `PACKAGE`."
+  (let ((symbol-list (set-difference (package-external-symbols from-package)
+                                     (package-external-symbols package)
+                                     :key #'symbol-name
+                                     :test #'equal)))
+    (import symbol-list package)))
+
 (defun inherit-from (from-package symbol-list &optional (package *package*))
   "Import/export some external symbols from `FROM-PACKAGE`.  This is like
 `IMPORT-FROM`, except symbols in `SYMBOL-LIST` are *also exported*
