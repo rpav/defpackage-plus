@@ -50,6 +50,8 @@ The following options are available.  Each of these are implemented as a call to
    not external to `PACKAGE`.
 * `:import-except PACKAGE SYMBOLS...`: Import all symbols from
   `PACKAGE`, *except* those named by `SYMBOLS`.
+* `:import-except-conflicts PACKAGE`: Imports everything except symbols
+  that would conflict.
 * `:shadow SYMBOLS...`: Ensure and add `SYMBOLS` to the shadowing
   symbols list.
 * `:shadowing-import-from PACKAGE SYMBOLS...`: Import `SYMBOLS` from
