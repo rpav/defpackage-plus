@@ -19,5 +19,6 @@
    (:file "utility")
    (:file "ensure")
    (:file "inherit")
+   (:file "local-nicknames")
    (:file "defpackage-plus")
    (:file "package-plus")))
