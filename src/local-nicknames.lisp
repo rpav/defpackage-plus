@@ -8,16 +8,17 @@
 
 (defun add-local-nickname (package nickname local-to)
   (declare (ignorable package nickname local-to))
-  #+package-local-nicknames
-  (progn
-    #+sbcl
-    (sb-ext:add-package-local-nickname nickname package local-to)
-    #+(or abcl ecl)
-    (ext:add-package-local-nickname nickname package local-to)))
+  #+sbcl
+  (sb-ext:add-package-local-nickname nickname package local-to)
+  #+(or abcl ecl)
+  (ext:add-package-local-nickname nickname package local-to))
 
 (defmethod defpackage+-dispatch ((option (eql :local-nicknames)) params package)
   (loop :for (nick pack) :in params :do
-    (ensure-package pack)
-    (add-local-nickname pack nick package
-        #-package-local-nicknames (ensure-global-nickname pack nick))))
+    (progn
+      (ensure-package pack)
+      #+package-local-nicknames
+      (add-local-nickname pack nick package)
+      #-package-local-nicknames
+      (ensure-global-nickname pack nick))))
 
